@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:cxf="http://cxf.apache.org/core"  
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+	http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
+	
+	<import resource="classpath:spring-jdbc.xml"/>
+
+	 <import resource="classpath:META-INF/cxf/cxf.xml"/>
+	 <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml"/>
+	 <!-- import resource="classpath:META-INF/cxf/cxf-extension-jaxrs-binding.xml"/-->
+  	 <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+  	<!-- Load in application properties reference -->
+	<bean id="applicationProperties" class="com.venkat.util.PropertiesUtil">
+    	<property name="location" value="classpath:ttd-app.properties"/>
+	</bean> 
+	<context:annotation-config />
+    <context:component-scan base-package="com.venkat.*,com.srijan.*"/> 
+     <!-- Create a Proxy for AspectJ -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/> 
+	<jaxrs:server id="myService" address="/">
+		<jaxrs:serviceBeans>
+			<ref bean="personService" />
+			<ref bean="apVillageRestService"/>
+			<ref bean="apManagudiUsersRestService"/>
+		</jaxrs:serviceBeans>
+		
+		<jaxrs:features>
+     		<cxf:logging/>
+		</jaxrs:features>
+		<jaxrs:providers> 
+			<ref bean="jsonBodyReaderWriter"/>
+			<ref bean="exceptionMapper"/>
+			<ref bean="cors-filter" />  
+		</jaxrs:providers>
+	</jaxrs:server>
+	<jaxws:endpoint id="personId"
+                  implementor="#personWSImpl"
+                  address="/cxfPerson"/>
+    
+    <jaxws:endpoint id="apVillageId"
+                  implementor="#apVillageService"
+                  address="/cxfVillage"/>
+                  
+     <jaxws:endpoint id="managudiUsersId"
+                  implementor="#managudiUserService"
+                  address="/cxfManagudiUsers"/>
+                  
+     <jaxws:endpoint id="tempManagudiUsersId"
+                  implementor="#tempManagudiUserService"
+                  address="/cxfTempManagudiUsers"/>
+
+   <bean id="cors-filter" class="org.apache.cxf.rs.security.cors.CrossOriginResourceSharingFilter"
+   					p:allowCredentials="true"/> 
+ 
+    
+	<bean id="personService" class="com.venkat.service.PersonService" >
+		 <property name="personImpl" ref="person"/>
+	</bean>
+	<bean id="personWSImpl" class="com.venkat.service.PersonWSImpl" >
+		 <property name="personImpl" ref="person"/>
+	</bean>
+	
+	<bean id="apVillageService" class="com.venkat.ap.services.APVillageSerevice" >
+		 <property name="apVillageDao" ref="apVillage"/>
+	</bean>
+	
+	<bean id="managudiUserService" class="com.venkat.ap.services.ManagudiUsersSearchService" >
+		 <property name="managudiUsersDao" ref="managudiUsers"/>
+	</bean>
+	
+	<bean id="tempManagudiUserService" class="com.venkat.ap.services.APTempManagudiUsersService" >
+		 <property name="tempManagudiUsersDao" ref="tempManagudiUsers"/>
+	</bean>
+	
+</beans>
