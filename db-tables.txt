@@ -1,0 +1,35 @@
+delimiter $$
+
+CREATE TABLE `apvillages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `dist_id` int(11) DEFAULT NULL,
+  `dist_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `mandal_id` int(11) DEFAULT NULL,
+  `mandal_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `village_id` int(11) DEFAULT NULL,
+  `village_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=28552 DEFAULT CHARSET=latin1$$
+
+delimiter $$
+
+CREATE TABLE `managudi_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `managudi_id` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Dept` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Category` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `association_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `State` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Dist` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Mandal` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `Village` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `temple_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `designation` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `phone` double DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `createdDate` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=26136 DEFAULT CHARSET=latin1$$
+
+delimiter $$
